@@ -9,6 +9,7 @@
  * This software is provided AS IS and it comes with no warranties of any type. 
  */
 
+#include<cstdlib>
 #include<iostream>
 #include<opencv2/opencv.hpp>
 using namespace std;
@@ -20,17 +21,18 @@ int main()
     capture.set(CV_CAP_PROP_FRAME_WIDTH,1920);
     capture.set(CV_CAP_PROP_FRAME_HEIGHT,1080);
     if(!capture.isOpened()){
-	    cout << "Failed to connect to the camera." << endl;
+	    cerr << "Failed to connect to the camera." << endl;
+	    return EXIT_FAILURE;
     }
     Mat frame, edges;
     capture >> frame;
     if(frame.empty()){
-		cout << "Failed to capture an image" << endl;
-		return -1;
+		cerr << "Failed to capture an image" << endl;
+		return  EXIT_FAILURE;
     }
     cvtColor(frame, edges, CV_BGR2GRAY);
     Canny(edges, edges, 0, 30, 3);
     imwrite("edges.png", edges);
     imwrite("capture.png", frame);
-    return 0;
+    return EXIT_SUCCESS;
 }
